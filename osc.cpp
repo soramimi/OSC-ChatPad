@@ -2,6 +2,7 @@
 #include "osc.h"
 #include <cstring>
 #include <thread>
+#include <algorithm>
 
 #ifdef _WIN32
 #include <WinSock2.h>
@@ -14,6 +15,13 @@
 #define closesocket ::close
 #define ioctlsocket ::ioctl
 #define IN_ADDR in_addr
+#endif
+
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
 #endif
 
 namespace {
@@ -142,6 +150,30 @@ void osc::Transmitter::send_float(const std::string &addr, float val)
 	sendto(m->sock, tmp, i, 0, (struct sockaddr *)&m->addr, sizeof(m->addr));
 }
 
+void osc::Transmitter::send_chatbox(const std::string &addr, std::string const &msg)
+{
+	char tmp[1000];
+
+	size_t i = addr.size();
+	memcpy(tmp, addr.c_str(), i);
+	tmp[i++] = 0;
+	for (int j = 0; j < 3 && (i & 3); j++) tmp[i++] = 0;
+
+	tmp[i++] = ',';
+	tmp[i++] = 's';
+	tmp[i++] = 'T';
+	tmp[i++] = 0;
+
+	size_t n = std::min((size_t)144, msg.size());
+	for (size_t j = 0; j < n; j++) {
+		tmp[i++] = msg[j];
+	}
+	tmp[i++] = 0;
+	while (i & 3) tmp[i++] = 0;
+
+	sendto(m->sock, tmp, i, 0, (struct sockaddr *)&m->addr, sizeof(m->addr));
+}
+
 //// Receiver ////
 
 struct osc::Receiver::Private {
@@ -205,7 +237,7 @@ void osc::Receiver::run()
 			if (pos + 2 < end && buffer[pos] == ',') {
 				pos++;
 				char c = buffer[pos];
-				pos+= 3;
+				pos += 3;
 				switch (c) {
 				case 'T':
 					value.type_ = Value::Type::Bool;

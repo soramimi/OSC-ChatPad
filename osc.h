@@ -70,6 +70,7 @@ public:
 	void send_bool(const std::string &addr, bool val);
 	void send_int(const std::string &addr, int32_t val);
 	void send_float(const std::string &addr, float val);
+	void send_chatbox(const std::string &addr, const std::string &msg);
 };
 
 class Receiver {

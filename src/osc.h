@@ -64,7 +64,7 @@ public:
 	Transmitter();
 	~Transmitter();
 
-	void open(char const *hostname);
+	void open(char const *hostname, int port = 9000);
 	void close();
 
 	void send_bool(const std::string &addr, bool val);

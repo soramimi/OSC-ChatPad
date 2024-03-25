@@ -1,7 +1,7 @@
 
 DESTDIR = $$PWD/_bin
 
-TARGET = OSC-ChatAssistant
+TARGET = OSC-ChatboxAssistant
 TEMPLATE = app
 CONFIG += c++11
 CONFIG -= app_bundle

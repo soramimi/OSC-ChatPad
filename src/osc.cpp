@@ -64,14 +64,14 @@ osc::Transmitter::~Transmitter()
 	delete m;
 }
 
-void osc::Transmitter::open(char const *hostname)
+void osc::Transmitter::open(char const *hostname, int port)
 {
 	close();
 
 	m->sock = socket(AF_INET, SOCK_DGRAM, 0);
 
 	m->addr.sin_family = AF_INET;
-	m->addr.sin_port = htons(9000);
+	m->addr.sin_port = htons(port);
 	get_host_by_name(hostname, &m->addr.sin_addr);
 }
 

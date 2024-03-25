@@ -23,14 +23,15 @@ MainDialog::MainDialog(QWidget *parent)
 {
 	ui->setupUi(this);
 
-	m->tx.open("127.0.0.1");
+	setupNetwork();
 
 	ui->radioButton_ime_off->click();
 
-	ui->comboBox_to->addItem("EN");
-	ui->comboBox_to->addItem("JA");
-	ui->comboBox_to->addItem("KO");
-	ui->comboBox_to->addItem("ZH");
+	ui->listWidget_lang->addItem("EN");
+	ui->listWidget_lang->addItem("JA");
+	ui->listWidget_lang->addItem("KO");
+	ui->listWidget_lang->addItem("ZH");
+	ui->listWidget_lang->setCurrentRow(0);
 
 	ui->tabWidget->setCurrentWidget(ui->tab_text);
 }
@@ -42,6 +43,22 @@ MainDialog::~MainDialog()
 	m->tx.close();
 	delete m;
 	delete ui;
+}
+
+void MainDialog::setupNetwork()
+{
+	MySettings settings;
+	QString host = settings.value("OSC_Receiver_Address").toString();
+	int port = settings.value("OSC_Receiver_Port").toInt();
+	if (host.isEmpty()) {
+		host = "localhost";
+	}
+	if (port == 0) {
+		port = 9000;
+	}
+	ui->lineEdit_osc_address->setText(host);
+	ui->lineEdit_osc_port->setText(QString::number(port));
+	m->tx.open(host.toStdString().c_str(), port);
 }
 
 void MainDialog::setImeState(bool on)
@@ -140,10 +157,13 @@ QString MainDialog::translate(QString const &text, QString const &target_lang)
 
 void MainDialog::on_pushButton_translate_clicked()
 {
-	QString text = ui->plainTextEdit_trans_from->toPlainText();
-	QString target_lang = ui->comboBox_to->currentText();
+	auto *item = ui->listWidget_lang->currentItem();
+	if (!item) return;
 
-	text = translate(text, target_lang);
+	QString text = ui->plainTextEdit_trans_from->toPlainText();
+	QString lang = item->text();
+
+	text = translate(text, lang);
 
 	ui->plainTextEdit_trans_to->setPlainText(text);
 }
@@ -189,4 +209,14 @@ void MainDialog::on_pushButton_settings_apply_clicked()
 {
 	MySettings settings;
 	settings.setValue("DeepL_API_Key", ui->lineEdit_deepl_api_key->text());
+	settings.setValue("OSC_Receiver_Address", ui->lineEdit_osc_address->text());
+	settings.setValue("OSC_Receiver_Port", ui->lineEdit_osc_port->text().toInt());
+	setupNetwork();
 }
+
+void MainDialog::on_pushButton_osc_reset_clicked()
+{
+	ui->lineEdit_osc_address->setText("localhost");
+	ui->lineEdit_osc_port->setText("9000");
+}
+

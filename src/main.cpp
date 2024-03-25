@@ -14,7 +14,7 @@ Global *global;
 
 int main(int argc, char **argv)
 {
-	wchar_t const *name = L"OSC Chat Assistant";
+	wchar_t const *name = L"OSC Chatbox Assistant";
 	hMutex = CreateMutex(NULL, FALSE, name);
 	if (GetLastError() == ERROR_ALREADY_EXISTS) {
 		CloseHandle(hMutex);
@@ -26,12 +26,15 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
+	QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+	putenv("QT_ENABLE_HIGHDPI_SCALING=0");
+
 	sock::startup();
 
 	Global g;
 	global = &g;
 	global->organization_name = "soramimi.jp";
-	global->application_name = "OSC-ChatAssistant";
+	global->application_name = "OSC-ChatboxAssistant";
 	global->generic_config_dir = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
 	global->app_config_dir = global->generic_config_dir / global->organization_name / global->application_name;
 	global->config_file_path = joinpath(global->app_config_dir, global->application_name + ".ini");

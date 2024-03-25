@@ -30,11 +30,14 @@ private slots:
 
 	void on_pushButton_settings_apply_clicked();
 
+	void on_pushButton_osc_reset_clicked();
+
 private:
 	Ui::MainDialog *ui;
 	void setImeState(bool on);
 	QString translate(const QString &text, const QString &target_lang);
 	void setTypingIndicator(bool f);
+	void setupNetwork();
 };
 
 #endif // MAINDIALOG_H

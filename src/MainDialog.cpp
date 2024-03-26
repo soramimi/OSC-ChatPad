@@ -71,6 +71,16 @@ void MainDialog::setupNetwork()
 	m->tx.open(host.toStdString().c_str(), port);
 }
 
+void MainDialog::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Escape) {
+		// inhibit closing by ESC key
+		event->ignore();
+		return;
+	}
+	QDialog::keyPressEvent(event);
+}
+
 void MainDialog::setImeState(bool on)
 {
 	HWND hwnd = (HWND)this->winId();

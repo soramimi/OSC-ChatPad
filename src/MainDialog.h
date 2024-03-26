@@ -10,12 +10,19 @@ class MainDialog;
 class MainDialog : public QDialog {
 	Q_OBJECT
 private:
+	Ui::MainDialog *ui;
 	struct Private;
 	Private *m;
+
+	void setImeState(bool on);
+	QString translate(const QString &text, const QString &target_lang);
+	void setTypingIndicator(bool f);
+	void setupNetwork();
+protected:
+	void keyPressEvent(QKeyEvent *event);
 public:
 	explicit MainDialog(QWidget *parent = nullptr);
 	~MainDialog();
-
 private slots:
 	void on_plainTextEdit_textChanged();
 	void on_pushButton_clear_clicked();
@@ -29,13 +36,6 @@ private slots:
 	void on_radioButton_ime_off_clicked();
 	void on_radioButton_ime_on_clicked();
 	void on_tabWidget_currentChanged(int index);
-
-private:
-	Ui::MainDialog *ui;
-	void setImeState(bool on);
-	QString translate(const QString &text, const QString &target_lang);
-	void setTypingIndicator(bool f);
-	void setupNetwork();
 };
 
 #endif // MAINDIALOG_H

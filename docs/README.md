@@ -29,7 +29,8 @@ VRChatのチャットボックスの入力を支援するツールです。
 - コピーアイコンをクリック
 - OSC Chatbox Assistant の Settings ページで、DeepL API Key の欄で貼り付け（Ctrl+V）
 - Saveボタンをクリック
-![ご利用中のDeepLアカウント](5.png)
+
+![Settingsページ](5.png)
 
 ## 使い方
 

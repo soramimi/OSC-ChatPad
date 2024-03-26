@@ -11,6 +11,13 @@
 #include <QThread>
 #include <QSettings>
 
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
+
 struct MainDialog::Private {
 	osc::Transmitter tx;
 	WebContext webcx;
@@ -22,6 +29,9 @@ MainDialog::MainDialog(QWidget *parent)
 	, m(new Private)
 {
 	ui->setupUi(this);
+
+	layout()->setContentsMargins(2, 2, 2, 2);
+	layout()->setSpacing(0);
 
 	setupNetwork();
 
@@ -53,7 +63,7 @@ void MainDialog::setupNetwork()
 	if (host.isEmpty()) {
 		host = "localhost";
 	}
-	if (port == 0) {
+	if (port < 1 || port > 65535) {
 		port = 9000;
 	}
 	ui->lineEdit_osc_address->setText(host);
@@ -101,9 +111,15 @@ void MainDialog::on_pushButton_paste_clicked()
 
 void MainDialog::on_pushButton_clear_clicked()
 {
-	ui->plainTextEdit->clear();
-	ui->plainTextEdit_trans_from->clear();
-	ui->plainTextEdit_trans_to->clear();
+	bool is_tab_text = (ui->tabWidget->currentWidget() == ui->tab_text);
+	bool is_tab_trans = (ui->tabWidget->currentWidget() == ui->tab_translation);
+	if (is_tab_text) {
+		ui->plainTextEdit->clear();
+	}
+	if (is_tab_trans) {
+		ui->plainTextEdit_trans_from->clear();
+		ui->plainTextEdit_trans_to->clear();
+	}
 }
 
 void MainDialog::setTypingIndicator(bool f)
@@ -191,6 +207,8 @@ void MainDialog::on_tabWidget_currentChanged(int index)
 	bool is_tab_text = (ui->tabWidget->currentWidget() == ui->tab_text);
 	bool is_tab_trans = (ui->tabWidget->currentWidget() == ui->tab_translation);
 	bool is_tab_settings = (ui->tabWidget->currentWidget() == ui->tab_settings);
+	ui->pushButton_clear->setEnabled(is_tab_text || is_tab_trans);
+	ui->pushButton_paste->setEnabled(is_tab_text || is_tab_trans);
 	ui->pushButton_send->setEnabled(is_tab_text);
 
 	if (is_tab_settings) {
@@ -205,18 +223,18 @@ void MainDialog::on_plainTextEdit_textChanged()
 	setTypingIndicator(on);
 }
 
-void MainDialog::on_pushButton_settings_apply_clicked()
-{
-	MySettings settings;
-	settings.setValue("DeepL_API_Key", ui->lineEdit_deepl_api_key->text());
-	settings.setValue("OSC_Receiver_Address", ui->lineEdit_osc_address->text());
-	settings.setValue("OSC_Receiver_Port", ui->lineEdit_osc_port->text().toInt());
-	setupNetwork();
-}
-
 void MainDialog::on_pushButton_osc_reset_clicked()
 {
 	ui->lineEdit_osc_address->setText("localhost");
 	ui->lineEdit_osc_port->setText("9000");
+}
+
+void MainDialog::on_pushButton_settings_save_clicked()
+{
+	MySettings settings;
+	settings.setValue("OSC_Receiver_Address", ui->lineEdit_osc_address->text());
+	settings.setValue("OSC_Receiver_Port", ui->lineEdit_osc_port->text().toInt());
+	settings.setValue("DeepL_API_Key", ui->lineEdit_deepl_api_key->text());
+	setupNetwork();
 }
 

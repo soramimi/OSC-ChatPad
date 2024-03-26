@@ -17,20 +17,18 @@ public:
 	~MainDialog();
 
 private slots:
+	void on_plainTextEdit_textChanged();
 	void on_pushButton_clear_clicked();
 	void on_pushButton_insert_clicked();
+	void on_pushButton_osc_reset_clicked();
 	void on_pushButton_paste_clicked();
 	void on_pushButton_send_clicked();
+	void on_pushButton_settings_save_clicked();
 	void on_pushButton_swap_clicked();
 	void on_pushButton_translate_clicked();
 	void on_radioButton_ime_off_clicked();
 	void on_radioButton_ime_on_clicked();
 	void on_tabWidget_currentChanged(int index);
-	void on_plainTextEdit_textChanged();
-
-	void on_pushButton_settings_apply_clicked();
-
-	void on_pushButton_osc_reset_clicked();
 
 private:
 	Ui::MainDialog *ui;

@@ -3,6 +3,7 @@
 #include "Global.h"
 #include "joinpath.h"
 #include "sock.h"
+#include "MySettings.h"
 #include <QApplication>
 #include <QStandardPaths>
 #include <Windows.h>
@@ -25,9 +26,6 @@ int main(int argc, char **argv)
 		}
 		return 0;
 	}
-
-	QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
-	putenv("QT_ENABLE_HIGHDPI_SCALING=0");
 
 	sock::startup();
 

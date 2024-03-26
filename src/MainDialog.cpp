@@ -151,10 +151,26 @@ QString MainDialog::translate(QString const &text, QString const &target_lang)
 		return "DeepL API Key is not set.";
 	}
 
-	QString text2 = text;
-	text2.replace("\"", "\\\"");
+	std::string json = "{\"text\": [\"";
 
-	std::string json = "{\"text\": [\"" + text2.toStdString() + "\"],\"target_lang\": \"" + target_lang.toStdString() + "\"}";
+	std::string utf8 = text.toStdString();
+	for (auto c : utf8) {
+		if (c == '\n') {
+			json += "\\n";
+		} else if (c == '\r') {
+			// nop // json += "\\r";
+		} else if (c == '\t') {
+			json += "\\t";
+		} else if (c == '\\') {
+			json += "\\\\";
+		} else if (c == '\"') {
+			json += "\\\"";
+		} else {
+			json += c;
+		}
+	}
+
+	json += "\"],\"target_lang\": \"" + target_lang.toStdString() + "\"}";
 
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 

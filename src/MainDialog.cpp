@@ -10,6 +10,7 @@
 #include <imm.h>
 #include <QThread>
 #include <QSettings>
+#include "StatusWidget.h"
 
 #ifdef min
 #undef min
@@ -37,11 +38,7 @@ MainDialog::MainDialog(QWidget *parent)
 
 	ui->radioButton_ime_off->click();
 
-	ui->listWidget_lang->addItem("EN");
-	ui->listWidget_lang->addItem("JA");
-	ui->listWidget_lang->addItem("KO");
-	ui->listWidget_lang->addItem("ZH");
-	ui->listWidget_lang->setCurrentRow(0);
+	ui->radioButton_en->click();
 
 	ui->tabWidget->setCurrentWidget(ui->tab_text);
 }
@@ -107,18 +104,6 @@ void MainDialog::on_radioButton_ime_on_clicked()
 	setImeState(true);
 }
 
-void MainDialog::on_pushButton_paste_clicked()
-{
-	QClipboard *clipboard = QApplication::clipboard();
-	QString text = clipboard->text();
-
-	if (ui->tabWidget->currentWidget() == ui->tab_text) {
-		ui->plainTextEdit->insertPlainText(text);
-	} else if (ui->tabWidget->currentWidget() == ui->tab_translation) {
-		ui->plainTextEdit_trans_from->setPlainText(text);
-	}
-}
-
 void MainDialog::on_pushButton_clear_clicked()
 {
 	bool is_tab_text = (ui->tabWidget->currentWidget() == ui->tab_text);
@@ -135,12 +120,16 @@ void MainDialog::on_pushButton_clear_clicked()
 void MainDialog::setTypingIndicator(bool f)
 {
 	m->tx.send_bool("/chatbox/typing", f);
+
+	ui->widget_status->setStatus(f ? StatusWidget::Typing : StatusWidget::Normal);
 }
 
 void MainDialog::on_pushButton_send_clicked()
 {
 	QString text = ui->plainTextEdit->toPlainText();
 	m->tx.send_chatbox("/chatbox/input", text.toStdString());
+
+	ui->widget_status->setStatus(StatusWidget::Sent);
 }
 
 QString MainDialog::translate(QString const &text, QString const &target_lang)
@@ -197,13 +186,19 @@ QString MainDialog::translate(QString const &text, QString const &target_lang)
 	return QString::fromStdString(translated);
 }
 
+QString MainDialog::languageID() const
+{
+	if (ui->radioButton_en->isChecked()) return "EN";
+	if (ui->radioButton_ja->isChecked()) return "JA";
+	if (ui->radioButton_ko->isChecked()) return "KO";
+	if (ui->radioButton_zh->isChecked()) return "ZH";
+	return "EN";
+}
+
 void MainDialog::on_pushButton_translate_clicked()
 {
-	auto *item = ui->listWidget_lang->currentItem();
-	if (!item) return;
-
 	QString text = ui->plainTextEdit_trans_from->toPlainText();
-	QString lang = item->text();
+	QString lang = languageID();
 
 	text = translate(text, lang);
 
@@ -264,3 +259,42 @@ void MainDialog::on_pushButton_settings_save_clicked()
 	setupNetwork();
 }
 
+
+void MainDialog::on_pushButton_cut_clicked()
+{
+	if (ui->tabWidget->currentWidget() == ui->tab_text) {
+		ui->plainTextEdit->cut();
+	} else if (ui->tabWidget->currentWidget() == ui->tab_translation) {
+		ui->plainTextEdit_trans_from->cut();
+	}
+}
+
+void MainDialog::on_pushButton_copy_clicked()
+{
+	if (ui->tabWidget->currentWidget() == ui->tab_text) {
+		ui->plainTextEdit->copy();
+	} else if (ui->tabWidget->currentWidget() == ui->tab_translation) {
+		ui->plainTextEdit_trans_from->copy();
+	}
+}
+
+void MainDialog::on_pushButton_paste_clicked()
+{
+	QClipboard *clipboard = QApplication::clipboard();
+	QString text = clipboard->text();
+
+	if (ui->tabWidget->currentWidget() == ui->tab_text) {
+		ui->plainTextEdit->insertPlainText(text);
+	} else if (ui->tabWidget->currentWidget() == ui->tab_translation) {
+		ui->plainTextEdit_trans_from->setPlainText(text);
+	}
+}
+
+void MainDialog::on_pushButton_select_all_clicked()
+{
+	if (ui->tabWidget->currentWidget() == ui->tab_text) {
+		ui->plainTextEdit->selectAll();
+	} else if (ui->tabWidget->currentWidget() == ui->tab_translation) {
+		ui->plainTextEdit_trans_from->selectAll();
+	}
+}

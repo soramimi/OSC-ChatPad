@@ -17,6 +17,7 @@ SOURCES += \
 	src/Global.cpp \
 	src/MainDialog.cpp \
 	src/MySettings.cpp \
+	src/StatusWidget.cpp \
 	src/base64.cpp \
 	src/joinpath.cpp \
 	src/misc.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
 	src/Global.h \
 	src/MainDialog.h \
 	src/MySettings.h \
+	src/StatusWidget.h \
 	src/base64.h \
 	src/joinpath.h \
 	src/jstream.h \
@@ -39,3 +41,6 @@ HEADERS += \
 
 FORMS += \
 	MainDialog.ui
+
+RESOURCES += \
+	src/resources/resources.qrc

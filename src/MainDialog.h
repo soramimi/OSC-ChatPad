@@ -18,6 +18,7 @@ private:
 	QString translate(const QString &text, const QString &target_lang);
 	void setTypingIndicator(bool f);
 	void setupNetwork();
+	QString languageID() const;
 protected:
 	void keyPressEvent(QKeyEvent *event);
 public:
@@ -36,6 +37,9 @@ private slots:
 	void on_radioButton_ime_off_clicked();
 	void on_radioButton_ime_on_clicked();
 	void on_tabWidget_currentChanged(int index);
+	void on_pushButton_cut_clicked();
+	void on_pushButton_copy_clicked();
+	void on_pushButton_select_all_clicked();
 };
 
 #endif // MAINDIALOG_H

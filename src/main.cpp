@@ -15,6 +15,8 @@ Global *global;
 
 int main(int argc, char **argv)
 {
+	putenv("QT_ENABLE_HIGHDPI_SCALING=0");
+
 	wchar_t const *name = L"OSC Chatbox Assistant";
 	hMutex = CreateMutex(NULL, FALSE, name);
 	if (GetLastError() == ERROR_ALREADY_EXISTS) {

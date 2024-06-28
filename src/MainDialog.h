@@ -19,6 +19,7 @@ private:
 	void setTypingIndicator(bool f);
 	void setupNetwork();
 	QString languageID() const;
+	QString iconPath() const;
 protected:
 	void keyPressEvent(QKeyEvent *event);
 public:

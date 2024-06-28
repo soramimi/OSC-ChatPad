@@ -37,6 +37,12 @@ MainDialog::MainDialog(QWidget *parent)
 {
 	ui->setupUi(this);
 
+	ui->label_version->setText("v2.0");
+
+	setWindowIcon(QIcon(":/image/OSC-ChatboxAssistant.svg"));
+	ui->widget_app_icon->setImage(QImage{":/image/OSC-ChatboxAssistant.svg"});
+	ui->widget_creator_icon->setImage(QImage{":/image/soramimi.jpg"});
+
 	layout()->setContentsMargins(2, 2, 2, 2);
 	layout()->setSpacing(0);
 
@@ -305,6 +311,13 @@ void MainDialog::on_pushButton_select_all_clicked()
 	}
 }
 
+QString MainDialog::iconPath() const
+{
+	QString path = QApplication::applicationFilePath();
+	path = QFileInfo(path).absoluteDir().absolutePath() / global->application_name + ".ico";
+	return path;
+}
+
 void MainDialog::on_pushButton_save_shortcut_file_clicked()
 {
 	QString desktop_dir = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
@@ -316,7 +329,7 @@ void MainDialog::on_pushButton_save_shortcut_file_clicked()
 	QString home = QDir::home().absolutePath();
 	QString shortcut_dir = desktop_dir;
 	QString name = global->application_name;
-	QString iconpath = target_path;//icon_dir / name + ".ico";
+	QString iconpath = iconPath();
 	QString shortcut_path = shortcut_dir / name + ".lnk";
 	QString lnkpath = QFileDialog::getSaveFileName(this, tr("Save Shortcut File"), shortcut_path, "Shortcut files (*.lnk)");
 	data.iconpath = (wchar_t const *)iconpath.utf16();

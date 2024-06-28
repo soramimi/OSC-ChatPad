@@ -7,9 +7,7 @@ CONFIG += c++11
 CONFIG -= app_bundle
 QT += core gui widgets
 
-LIBS += -luser32 -lws2_32 -limm32 -lshell32
-# win32 {
-# 	LIBS += -ladvapi32 -lshell32 -luser32 -lws2_32
+LIBS += -luser32 -lws2_32 -limm32 -lshell32 -lole32
 
 INCLUDEPATH += "C:\Qt\Tools\OpenSSLv3\Win_x64\include"
 LIBS += "-LC:\Qt\Tools\OpenSSLv3\Win_x64\lib"
@@ -17,6 +15,7 @@ LIBS += -llibcrypto -llibssl
 
 SOURCES += \
 	src/Global.cpp \
+	src/ImageWidget.cpp \
 	src/MainDialog.cpp \
 	src/MySettings.cpp \
 	src/StatusWidget.cpp \
@@ -31,6 +30,7 @@ SOURCES += \
 
 HEADERS += \
 	src/Global.h \
+	src/ImageWidget.h \
 	src/MainDialog.h \
 	src/MySettings.h \
 	src/StatusWidget.h \

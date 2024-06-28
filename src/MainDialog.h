@@ -40,6 +40,7 @@ private slots:
 	void on_pushButton_cut_clicked();
 	void on_pushButton_copy_clicked();
 	void on_pushButton_select_all_clicked();
+	void on_pushButton_save_shortcut_file_clicked();
 };
 
 #endif // MAINDIALOG_H

@@ -1,16 +1,22 @@
 #include "MainDialog.h"
 #include "ui_MainDialog.h"
+#include "Global.h"
+#include "MySettings.h"
+#include "StatusWidget.h"
+#include "WindowsShortcutFile.h"
+#include "joinpath.h"
 #include "jstream.h"
 #include "osc.h"
 #include "sock.h"
 #include "webclient.h"
-#include "MySettings.h"
 #include <QClipboard>
+#include <QDir>
+#include <QFileDialog>
+#include <QSettings>
+#include <QStandardPaths>
+#include <QThread>
 #include <Windows.h>
 #include <imm.h>
-#include <QThread>
-#include <QSettings>
-#include "StatusWidget.h"
 
 #ifdef min
 #undef min
@@ -298,3 +304,27 @@ void MainDialog::on_pushButton_select_all_clicked()
 		ui->plainTextEdit_trans_from->selectAll();
 	}
 }
+
+void MainDialog::on_pushButton_save_shortcut_file_clicked()
+{
+	QString desktop_dir = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+	QString target_path = QApplication::applicationFilePath();
+
+	Win32ShortcutData data;
+	data.targetpath = (wchar_t const *)target_path.utf16();
+
+	QString home = QDir::home().absolutePath();
+	QString shortcut_dir = desktop_dir;
+	QString name = global->application_name;
+	QString iconpath = target_path;//icon_dir / name + ".ico";
+	QString shortcut_path = shortcut_dir / name + ".lnk";
+	QString lnkpath = QFileDialog::getSaveFileName(this, tr("Save Shortcut File"), shortcut_path, "Shortcut files (*.lnk)");
+	data.iconpath = (wchar_t const *)iconpath.utf16();
+	data.lnkpath = (wchar_t const *)lnkpath.utf16();
+
+	if (!shortcut_path.isEmpty()) {
+		WindowsShortcutFile::createWin32Shortcut(data);
+	}
+
+}
+

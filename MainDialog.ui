@@ -127,7 +127,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tab_text">
         <attribute name="title">
@@ -287,19 +287,7 @@
         <attribute name="title">
          <string>Settings</string>
         </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
-         <property name="leftMargin">
-          <number>4</number>
-         </property>
-         <property name="topMargin">
-          <number>4</number>
-         </property>
-         <property name="rightMargin">
-          <number>4</number>
-         </property>
-         <property name="bottomMargin">
-          <number>4</number>
-         </property>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
@@ -396,6 +384,30 @@
            </property>
           </spacer>
          </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QPushButton" name="pushButton_save_shortcut_file">
+             <property name="text">
+              <string>Save shortcut file...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
         </layout>
        </widget>
       </widget>
@@ -486,15 +498,12 @@
  <tabstops>
   <tabstop>plainTextEdit</tabstop>
   <tabstop>plainTextEdit_trans_from</tabstop>
-  <tabstop>radioButton_en</tabstop>
-  <tabstop>radioButton_ja</tabstop>
-  <tabstop>radioButton_ko</tabstop>
-  <tabstop>radioButton_zh</tabstop>
   <tabstop>lineEdit_osc_address</tabstop>
   <tabstop>lineEdit_osc_port</tabstop>
   <tabstop>pushButton_osc_reset</tabstop>
   <tabstop>lineEdit_deepl_api_key</tabstop>
   <tabstop>pushButton_settings_save</tabstop>
+  <tabstop>pushButton_save_shortcut_file</tabstop>
  </tabstops>
  <resources/>
  <connections/>

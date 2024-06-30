@@ -8,6 +8,8 @@ CONFIG -= app_bundle
 QT += core gui widgets
 
 LIBS += -luser32 -lws2_32 -limm32 -lshell32 -lole32
+RC_FILE = win.rc
+QMAKE_SUBSYSTEM_SUFFIX=,5.01
 
 INCLUDEPATH += "C:\Qt\Tools\OpenSSLv3\Win_x64\include"
 LIBS += "-LC:\Qt\Tools\OpenSSLv3\Win_x64\lib"

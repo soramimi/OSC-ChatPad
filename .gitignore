@@ -3,3 +3,4 @@ build*
 _build*
 _bin/
 release/OSC-ChatboxAssistant/OSC-ChatboxAssistant.exe
+*.zip

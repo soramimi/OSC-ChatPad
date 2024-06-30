@@ -311,12 +311,7 @@ void MainDialog::on_pushButton_select_all_clicked()
 	}
 }
 
-QString MainDialog::iconPath() const
-{
-	QString path = QApplication::applicationFilePath();
-	path = QFileInfo(path).absoluteDir().absolutePath() / global->application_name + ".ico";
-	return path;
-}
+
 
 void MainDialog::on_pushButton_save_shortcut_file_clicked()
 {
@@ -329,7 +324,7 @@ void MainDialog::on_pushButton_save_shortcut_file_clicked()
 	QString home = QDir::home().absolutePath();
 	QString shortcut_dir = desktop_dir;
 	QString name = global->application_name;
-	QString iconpath = iconPath();
+	QString iconpath = target_path;
 	QString shortcut_path = shortcut_dir / name + ".lnk";
 	QString lnkpath = QFileDialog::getSaveFileName(this, tr("Save Shortcut File"), shortcut_path, "Shortcut files (*.lnk)");
 	data.iconpath = (wchar_t const *)iconpath.utf16();

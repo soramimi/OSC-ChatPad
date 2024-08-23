@@ -1,3 +1,4 @@
+#define NOMINMAX
 #include "MainDialog.h"
 #include "ui_MainDialog.h"
 #include "Global.h"
@@ -18,12 +19,8 @@
 #include <Windows.h>
 #include <imm.h>
 
-#ifdef min
-#undef min
-#endif
-#ifdef max
-#undef max
-#endif
+#define APP_VERSION "v2.0.1"
+#define COPYRIGHT_YEAR "2024"
 
 struct MainDialog::Private {
 	osc::Transmitter tx;
@@ -37,7 +34,8 @@ MainDialog::MainDialog(QWidget *parent)
 {
 	ui->setupUi(this);
 
-	ui->label_version->setText("v2.0");
+	ui->label_version->setText(APP_VERSION);
+	ui->label_copyright->setText(QString("Copyright (C) %1 Shinichi Fuchita").arg(COPYRIGHT_YEAR));
 
 	setWindowIcon(QIcon(":/image/OSC-ChatboxAssistant.svg"));
 	ui->widget_app_icon->setImage(QImage{":/image/OSC-ChatboxAssistant.svg"});
@@ -298,7 +296,7 @@ void MainDialog::on_pushButton_paste_clicked()
 	if (ui->tabWidget->currentWidget() == ui->tab_text) {
 		ui->plainTextEdit->insertPlainText(text);
 	} else if (ui->tabWidget->currentWidget() == ui->tab_translation) {
-		ui->plainTextEdit_trans_from->setPlainText(text);
+		ui->plainTextEdit_trans_from->insertPlainText(text);
 	}
 }
 

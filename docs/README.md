@@ -14,6 +14,11 @@ VRChatのチャットボックスの入力を支援するツールです。
 
 - OSC-ChatboxAssistant.zip を展開し、任意のフォルダへ移動します。
 
+## 起動方法
+
+- OSC-ChatboxAssistant.exe を実行します。
+- About画面からショートカットを保存することができます。
+
 ## 翻訳機能の準備
 
 - DeepLへログイン
